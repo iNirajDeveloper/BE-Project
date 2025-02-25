@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Fingerprint Attendance</title>
+	<style type="text/css">
+		body {
+			background-color: #F5F5F5;
+			font-family: Arial, sans-serif;
+			margin: 0;
+			padding: 0;
+		}
+		.data-head {
+			margin: auto;
+			width: 50%;
+			text-align: center;
+			font-size: 45px;
+			font-weight: bold;
+			margin: 50px auto;
+			padding: 20px;
+			background-color: #FFF;
+			box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+			border-radius: 20px;
+		}
+		.data-container {
+			width: 50%;
+			margin: 20px auto;
+			padding: 20px;
+			background-color: #FFF;
+			box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+			border-radius: 10px;
+		}
+		.data-item {
+			text-align: center;
+			margin-bottom: 20px;
+		}
+		.data-item h2 {
+			font-size: 24px;
+			font-weight: bold;
+			color: #333;
+		}
+		.data-item p {
+			font-size: 30px;
+			font-weight: bold;
+			color: #6EB7FF;
+		}
+	</style>
+</head>
+<body>
+
+	<div class="data-head">Fingerprint Attendance</div>
+
+	<div id="data-container" class="data-container">
+		
+	</div>
+
+
+	<script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore-compat.js"></script>
+
+	<script>
+	 
+    const firebaseConfig = {
+    apiKey: "AIzaSyCfDXcLGvuus4uIUJVvKawkapXoxTMwcns",
+    authDomain: "attendaceesp.firebaseapp.com",
+    projectId: "attendaceesp",
+    storageBucket: "attendaceesp.firebasestorage.app",
+    messagingSenderId: "34023784244",
+    appId: "1:34023784244:web:631235e424a6712be56f61"
+  };
+
+	
+	  firebase.initializeApp(firebaseConfig);
+	  const db = firebase.firestore();
+
+	  const collectionRef = db.collection("FingerprintData");
+
+	  collectionRef.onSnapshot((querySnapshot) => {
+	    const container = document.getElementById('data-container');
+	    container.innerHTML = ''; 
+	    
+	    querySnapshot.forEach((doc) => {
+	      const data = doc.data();
+	      const fingerprintID = doc.id;
+	      const name = data.Name;
+
+	      const itemDiv = document.createElement('div');
+	      itemDiv.className = 'data-item';
+	      itemDiv.innerHTML = `
+	        <h2>${fingerprintID}</h2>
+	        <p>${name}</p>
+	      `;
+
+	      container.appendChild(itemDiv);
+	    });
+	  }, (error) => {
+	    console.error("Error getting documents:", error);
+	  });
+	</script>
+
+</body>
+</html>
